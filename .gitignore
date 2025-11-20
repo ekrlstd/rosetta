@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+ENV/
+backend/venv/
+
+# Virtual environments
+*.venv
+venv.bak/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node.js (for your frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
