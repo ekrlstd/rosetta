@@ -1,0 +1,124 @@
+body {
+  overflow-y: auto !important;
+  font-family: "Inter";
+}
+
+.about-container {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #060010;
+}
+
+.about-content {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem 2rem;
+  color: white;
+}
+
+.about-content h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 0 0 3rem 0;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.about-section {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.team-section {
+  margin-top: 1rem;
+}
+
+.about-section h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  opacity: 0.95;
+}
+
+.about-section p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  opacity: 0.85;
+  margin: 0 0 1rem 0;
+}
+
+.about-section p:last-child {
+  margin-bottom: 0;
+}
+
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.team-member {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  opacity: 0.9;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 0.75rem;
+  border-radius: 10px;
+}
+
+.team-member:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(5px);
+}
+
+.linkedin-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: #0077b5;
+  transition: color 0.3s ease;
+}
+
+.team-member:hover .linkedin-icon {
+  color: #00a0dc;
+}
+
+/* Scrollbar styling */
+.about-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.about-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.about-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.about-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
