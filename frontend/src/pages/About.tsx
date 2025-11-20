@@ -43,7 +43,9 @@ export default function About() {
               providing a lightning-fast development experience and optimal
               performance. Our interactive dot grid background uses GSAP for
               smooth animations, while our machine learning model processes your
-              data to deliver personalized insights.
+              data to deliver personalized insights. We've also integrated the
+              Spotify API to dynamically display music inside our custom music
+              player.
             </p>
           </section>
         </div>
