@@ -1,56 +1,85 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DotGrid from "../components/DotGrid";
+import Navbar from "../components/Navbar";
+import "./Survey.css";
+
+interface SurveyData {
+  age: string;
+  stress_level: number;
+  gender: number;
+  menstruation: number;
+  sleep_duration: number;
+  pain_severity: number;
+  light_sensitivity: number;
+  noise_sensitivity: number;
+  number_of_meals: number;
+  water_intake: string;
+  sunny: number;
+  cloudy: number;
+  rainy: number;
+  snowy: number;
+}
 
 export default function Survey() {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState<SurveyData>({
+    age: "",
+    stress_level: 5,
+    gender: 1,
+    menstruation: 0,
+    sleep_duration: 8,
+    pain_severity: 5,
+    light_sensitivity: 0,
+    noise_sensitivity: 0,
+    number_of_meals: 3,
+    water_intake: "",
+    sunny: 0,
+    cloudy: 0,
+    rainy: 0,
+    snowy: 0,
+  });
 
-  const questions = [
-    {
-      id: 0,
-      question: "How satisfied are you with our service?",
-      options: ["Very Satisfied", "Satisfied", "Neutral", "Dissatisfied", "Very Dissatisfied"]
-    },
-    {
-      id: 1,
-      question: "How likely are you to recommend us?",
-      options: ["Very Likely", "Likely", "Neutral", "Unlikely", "Very Unlikely"]
-    },
-    {
-      id: 2,
-      question: "What is your primary use case?",
-      options: ["Personal", "Business", "Education", "Research", "Other"]
-    }
-  ];
+  const [selectedWeather, setSelectedWeather] = useState<string>("");
 
-  const handleAnswer = (answer: string) => {
-    setAnswers({ ...answers, [currentQuestion]: answer });
+  const handleSliderChange = (field: keyof SurveyData, value: number) => {
+    setFormData({ ...formData, [field]: value });
   };
 
-  const handleNext = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    }
+  const handleInputChange = (
+    field: keyof SurveyData,
+    value: string | number,
+  ) => {
+    setFormData({ ...formData, [field]: value });
   };
 
-  const handlePrevious = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
-    }
+  const handleWeatherChange = (weather: string) => {
+    setSelectedWeather(weather);
+    // Reset all weather columns to 0
+    const weatherData = {
+      sunny: 0,
+      cloudy: 0,
+      rainy: 0,
+      snowy: 0,
+    };
+    // Set selected weather to 1
+    if (weather === "sunny") weatherData.sunny = 1;
+    else if (weather === "cloudy") weatherData.cloudy = 1;
+    else if (weather === "rainy") weatherData.rainy = 1;
+    else if (weather === "snowy") weatherData.snowy = 1;
+
+    setFormData({ ...formData, ...weatherData });
   };
 
-  const handleSubmit = () => {
-    console.log("Survey submitted:", answers);
-    alert("Thank you for completing the survey!");
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Survey submitted:", formData);
+    alert("Thank you for submitting your health data!");
+    navigate("/");
   };
-
-  const isLastQuestion = currentQuestion === questions.length - 1;
-  const currentAnswer = answers[currentQuestion];
 
   return (
-    <div style={{ width: "100%", height: "100vh", position: "relative", overflow: "hidden" }}>
-      {/* Animated Background */}
+    <div className="survey-container">
       <DotGrid
         dotSize={6}
         baseColor="#271E37"
@@ -62,251 +91,267 @@ export default function Survey() {
         resistance={750}
         returnDuration={1.5}
       />
+      <Navbar />
 
-      {/* Survey Container */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "2rem",
-          pointerEvents: "none"
-        }}
-      >
-        {/* Survey Box */}
-        <div
-          style={{
-            background: "rgba(255, 255, 255, 0.95)",
-            backdropFilter: "blur(10px)",
-            borderRadius: "24px",
-            padding: "3rem",
-            maxWidth: "600px",
-            width: "100%",
-            boxShadow: "0 20px 60px rgba(82, 39, 255, 0.3)",
-            border: "1px solid rgba(82, 39, 255, 0.2)",
-            pointerEvents: "all"
-          }}
-        >
-          {/* Header */}
-          <div style={{ marginBottom: "2rem", textAlign: "center" }}>
-            <h1
-              style={{
-                fontSize: "2rem",
-                margin: "0 0 0.5rem 0",
-                color: "#271E37",
-                fontWeight: "700"
-              }}
-            >
-              Customer Survey
-            </h1>
-            <p style={{ color: "#666", margin: 0, fontSize: "0.95rem" }}>
-              Question {currentQuestion + 1} of {questions.length}
-            </p>
-          </div>
+      <div className="survey-content">
+        <div className="survey-card">
+          <h1>Daily Health Survey</h1>
+          <p className="survey-subtitle">
+            Help us understand your migraine patterns
+          </p>
 
-          {/* Progress Bar */}
-          <div
-            style={{
-              width: "100%",
-              height: "6px",
-              background: "#E5E5E5",
-              borderRadius: "3px",
-              marginBottom: "2.5rem",
-              overflow: "hidden"
-            }}
-          >
-            <div
-              style={{
-                width: `${((currentQuestion + 1) / questions.length) * 100}%`,
-                height: "100%",
-                background: "linear-gradient(90deg, #5227FF, #7C3AED)",
-                transition: "width 0.3s ease",
-                borderRadius: "3px"
-              }}
-            />
-          </div>
-
-          {/* Question */}
-          <h2
-            style={{
-              fontSize: "1.5rem",
-              marginBottom: "2rem",
-              color: "#271E37",
-              fontWeight: "600",
-              lineHeight: "1.4"
-            }}
-          >
-            {questions[currentQuestion].question}
-          </h2>
-
-          {/* Options */}
-          <div style={{ marginBottom: "2rem" }}>
-            {questions[currentQuestion].options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswer(option)}
-                style={{
-                  width: "100%",
-                  padding: "1rem 1.5rem",
-                  marginBottom: "0.75rem",
-                  background: currentAnswer === option
-                    ? "linear-gradient(135deg, #5227FF, #7C3AED)"
-                    : "#F8F9FA",
-                  color: currentAnswer === option ? "#FFFFFF" : "#271E37",
-                  border: currentAnswer === option
-                    ? "2px solid #5227FF"
-                    : "2px solid #E5E5E5",
-                  borderRadius: "12px",
-                  fontSize: "1rem",
-                  fontWeight: "500",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  textAlign: "left"
-                }}
-                onMouseEnter={(e) => {
-                  if (currentAnswer !== option) {
-                    e.currentTarget.style.background = "#F0F0F0";
-                    e.currentTarget.style.borderColor = "#5227FF";
-                    e.currentTarget.style.transform = "translateX(4px)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (currentAnswer !== option) {
-                    e.currentTarget.style.background = "#F8F9FA";
-                    e.currentTarget.style.borderColor = "#E5E5E5";
-                    e.currentTarget.style.transform = "translateX(0)";
-                  }
-                }}
+          <form onSubmit={handleSubmit}>
+            {/* Age */}
+            <div className="form-group">
+              <label htmlFor="age">Age</label>
+              <select
+                id="age"
+                value={formData.age}
+                onChange={(e) => handleInputChange("age", e.target.value)}
+                required
               >
-                {option}
-              </button>
-            ))}
-          </div>
+                <option value="">Select your age</option>
+                {Array.from({ length: 83 }, (_, i) => i + 18).map((age) => (
+                  <option key={age} value={age}>
+                    {age}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Navigation Buttons */}
-          <div
-            style={{
-              display: "flex",
-              gap: "1rem",
-              justifyContent: "space-between",
-              alignItems: "center"
-            }}
-          >
-            <button
-              onClick={handlePrevious}
-              disabled={currentQuestion === 0}
-              style={{
-                padding: "0.875rem 2rem",
-                background: currentQuestion === 0 ? "#E5E5E5" : "#FFFFFF",
-                color: currentQuestion === 0 ? "#999" : "#271E37",
-                border: "2px solid #E5E5E5",
-                borderRadius: "12px",
-                fontSize: "1rem",
-                fontWeight: "600",
-                cursor: currentQuestion === 0 ? "not-allowed" : "pointer",
-                transition: "all 0.2s ease"
-              }}
-              onMouseEnter={(e) => {
-                if (currentQuestion !== 0) {
-                  e.currentTarget.style.borderColor = "#5227FF";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (currentQuestion !== 0) {
-                  e.currentTarget.style.borderColor = "#E5E5E5";
-                }
-              }}
-            >
-              Previous
-            </button>
+            {/* Gender */}
+            <div className="form-group">
+              <label>Gender</label>
+              <div className="toggle-group">
+                <button
+                  type="button"
+                  className={`toggle-btn ${formData.gender === 1 ? "active" : ""}`}
+                  onClick={() => handleInputChange("gender", 1)}
+                >
+                  Male
+                </button>
+                <button
+                  type="button"
+                  className={`toggle-btn ${formData.gender === 0 ? "active" : ""}`}
+                  onClick={() => handleInputChange("gender", 0)}
+                >
+                  Female
+                </button>
+              </div>
+            </div>
 
-            <Link
-              to="/"
-              style={{
-                color: "#666",
-                textDecoration: "none",
-                fontSize: "0.9rem",
-                padding: "0.5rem"
-              }}
-            >
-              Exit Survey
-            </Link>
-
-            {isLastQuestion ? (
-              <button
-                onClick={handleSubmit}
-                disabled={!currentAnswer}
-                style={{
-                  padding: "0.875rem 2rem",
-                  background: currentAnswer
-                    ? "linear-gradient(135deg, #5227FF, #7C3AED)"
-                    : "#E5E5E5",
-                  color: currentAnswer ? "#FFFFFF" : "#999",
-                  border: "none",
-                  borderRadius: "12px",
-                  fontSize: "1rem",
-                  fontWeight: "600",
-                  cursor: currentAnswer ? "pointer" : "not-allowed",
-                  transition: "all 0.2s ease",
-                  boxShadow: currentAnswer ? "0 4px 12px rgba(82, 39, 255, 0.3)" : "none"
-                }}
-                onMouseEnter={(e) => {
-                  if (currentAnswer) {
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                    e.currentTarget.style.boxShadow = "0 6px 20px rgba(82, 39, 255, 0.4)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (currentAnswer) {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(82, 39, 255, 0.3)";
-                  }
-                }}
-              >
-                Submit Survey
-              </button>
-            ) : (
-              <button
-                onClick={handleNext}
-                disabled={!currentAnswer}
-                style={{
-                  padding: "0.875rem 2rem",
-                  background: currentAnswer
-                    ? "linear-gradient(135deg, #5227FF, #7C3AED)"
-                    : "#E5E5E5",
-                  color: currentAnswer ? "#FFFFFF" : "#999",
-                  border: "none",
-                  borderRadius: "12px",
-                  fontSize: "1rem",
-                  fontWeight: "600",
-                  cursor: currentAnswer ? "pointer" : "not-allowed",
-                  transition: "all 0.2s ease",
-                  boxShadow: currentAnswer ? "0 4px 12px rgba(82, 39, 255, 0.3)" : "none"
-                }}
-                onMouseEnter={(e) => {
-                  if (currentAnswer) {
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                    e.currentTarget.style.boxShadow = "0 6px 20px rgba(82, 39, 255, 0.4)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (currentAnswer) {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(82, 39, 255, 0.3)";
-                  }
-                }}
-              >
-                Next Question
-              </button>
+            {/* Menstruation (only for female) */}
+            {formData.gender === 0 && (
+              <div className="form-group">
+                <label>Currently Menstruating</label>
+                <div className="toggle-group">
+                  <button
+                    type="button"
+                    className={`toggle-btn ${formData.menstruation === 1 ? "active" : ""}`}
+                    onClick={() => handleInputChange("menstruation", 1)}
+                  >
+                    Yes
+                  </button>
+                  <button
+                    type="button"
+                    className={`toggle-btn ${formData.menstruation === 0 ? "active" : ""}`}
+                    onClick={() => handleInputChange("menstruation", 0)}
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
             )}
-          </div>
+
+            {/* Sleep Duration */}
+            <div className="form-group">
+              <label htmlFor="sleep_duration">
+                Sleep Duration:{" "}
+                <span className="slider-value">
+                  {formData.sleep_duration} hours
+                </span>
+              </label>
+              <input
+                id="sleep_duration"
+                type="range"
+                min="0"
+                max="12"
+                step="0.5"
+                value={formData.sleep_duration}
+                onChange={(e) =>
+                  handleSliderChange(
+                    "sleep_duration",
+                    parseFloat(e.target.value),
+                  )
+                }
+                className="slider"
+              />
+              <div className="slider-labels">
+                <span>0h</span>
+                <span>12h</span>
+              </div>
+            </div>
+
+            {/* Stress Level */}
+            <div className="form-group">
+              <label htmlFor="stress_level">
+                Stress Level:{" "}
+                <span className="slider-value">{formData.stress_level}</span>
+              </label>
+              <input
+                id="stress_level"
+                type="range"
+                min="1"
+                max="10"
+                value={formData.stress_level}
+                onChange={(e) =>
+                  handleSliderChange("stress_level", parseInt(e.target.value))
+                }
+                className="slider"
+              />
+              <div className="slider-labels">
+                <span>Low</span>
+                <span>High</span>
+              </div>
+            </div>
+
+            {/* Pain Severity */}
+            <div className="form-group">
+              <label htmlFor="pain_severity">
+                Usual Migraine Pain:{" "}
+                <span className="slider-value">{formData.pain_severity}</span>
+              </label>
+              <input
+                id="pain_severity"
+                type="range"
+                min="1"
+                max="10"
+                value={formData.pain_severity}
+                onChange={(e) =>
+                  handleSliderChange("pain_severity", parseInt(e.target.value))
+                }
+                className="slider"
+              />
+              <div className="slider-labels">
+                <span>Mild</span>
+                <span>Severe</span>
+              </div>
+            </div>
+
+            {/* Light Sensitivity */}
+            <div className="form-group">
+              <label>Light Sensitivity</label>
+              <div className="toggle-group">
+                <button
+                  type="button"
+                  className={`toggle-btn ${formData.light_sensitivity === 1 ? "active" : ""}`}
+                  onClick={() => handleInputChange("light_sensitivity", 1)}
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  className={`toggle-btn ${formData.light_sensitivity === 0 ? "active" : ""}`}
+                  onClick={() => handleInputChange("light_sensitivity", 0)}
+                >
+                  No
+                </button>
+              </div>
+            </div>
+
+            {/* Noise Sensitivity */}
+            <div className="form-group">
+              <label>Noise Sensitivity</label>
+              <div className="toggle-group">
+                <button
+                  type="button"
+                  className={`toggle-btn ${formData.noise_sensitivity === 1 ? "active" : ""}`}
+                  onClick={() => handleInputChange("noise_sensitivity", 1)}
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  className={`toggle-btn ${formData.noise_sensitivity === 0 ? "active" : ""}`}
+                  onClick={() => handleInputChange("noise_sensitivity", 0)}
+                >
+                  No
+                </button>
+              </div>
+            </div>
+
+            {/* Number of Meals */}
+            <div className="form-group">
+              <label htmlFor="number_of_meals">
+                Number of Meals Today:{" "}
+                <span className="slider-value">{formData.number_of_meals}</span>
+              </label>
+              <input
+                id="number_of_meals"
+                type="range"
+                min="1"
+                max="5"
+                value={formData.number_of_meals}
+                onChange={(e) =>
+                  handleSliderChange(
+                    "number_of_meals",
+                    parseInt(e.target.value),
+                  )
+                }
+                className="slider"
+              />
+              <div className="slider-labels">
+                <span>1</span>
+                <span>5</span>
+              </div>
+            </div>
+
+            {/* Water Intake */}
+            <div className="form-group">
+              <label htmlFor="water_intake">Water Intake (Liters)</label>
+              <select
+                id="water_intake"
+                value={formData.water_intake}
+                onChange={(e) =>
+                  handleInputChange("water_intake", e.target.value)
+                }
+                required
+              >
+                <option value="">Select water intake</option>
+                <option value="1">1L</option>
+                <option value="2">2L</option>
+                <option value="3">3L</option>
+                <option value="4">4L</option>
+                <option value="5">5L</option>
+                <option value="5+">5+ L</option>
+              </select>
+            </div>
+
+            {/* Weather */}
+            <div className="form-group">
+              <label htmlFor="weather">Weather Today</label>
+              <select
+                id="weather"
+                value={selectedWeather}
+                onChange={(e) => handleWeatherChange(e.target.value)}
+                required
+              >
+                <option value="">Select weather</option>
+                <option value="sunny">☀️ Sunny</option>
+                <option value="cloudy">☁️ Cloudy</option>
+                <option value="rainy">🌧️ Rainy</option>
+                <option value="snowy">❄️ Snowy</option>
+              </select>
+            </div>
+
+            {/* Submit Button */}
+            <button type="submit" className="submit-btn">
+              Submit Survey
+            </button>
+          </form>
         </div>
       </div>
     </div>
   );
 }
+
