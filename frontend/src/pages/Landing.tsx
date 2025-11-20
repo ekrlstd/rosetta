@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import DotGrid from "../components/DotGrid";
+import Navbar from "../components/Navbar";
 import "./Landing.css";
 
 export default function Landing() {
@@ -16,6 +17,7 @@ export default function Landing() {
         resistance={750}
         returnDuration={1.5}
       />
+      <Navbar />
       <div className="landing-content">
         <h1>Take Control of Your Migraines</h1>
         <p>
@@ -23,16 +25,8 @@ export default function Landing() {
           tailored to you.
         </p>
         <div className="button-group">
-          <a
-            href="https://github.com/ekrlstd/rosetta"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn"
-          >
-            GitHub
-          </a>
           <Link to="/survey" className="btn">
-            Take Survey
+            Get Started &ensp;→
           </Link>
         </div>
       </div>
