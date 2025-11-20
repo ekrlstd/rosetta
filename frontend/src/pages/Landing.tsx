@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import DotGrid from "../components/DotGrid";
+import "./Landing.css";
 
 export default function Landing() {
   return (
-    <div style={{ width: "100%", height: "100vh", position: "relative" }}>
+    <div className="landing-container">
       <DotGrid
         dotSize={6}
         baseColor="#271E37"
@@ -15,14 +16,25 @@ export default function Landing() {
         resistance={750}
         returnDuration={1.5}
       />
-
-      <div style={{ padding: "2rem" }}>
-        <h1>Welcome!</h1>
-        <p>This is the landing page.</p>
-
-        <Link to="/survey">
-          <button type="button">Start Survey</button>
-        </Link>
+      <div className="landing-content">
+        <h1>Take Control of Your Migraines</h1>
+        <p>
+          Log your day, get AI-powered insights, and discover calming music
+          tailored to you.
+        </p>
+        <div className="button-group">
+          <a
+            href="https://github.com/ekrlstd/rosetta"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn"
+          >
+            GitHub
+          </a>
+          <Link to="/survey" className="btn">
+            Take Survey
+          </Link>
+        </div>
       </div>
     </div>
   );

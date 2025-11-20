@@ -1,0 +1,59 @@
+body {
+  overflow: hidden;
+  font-family: "Inter";
+}
+
+.landing-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.landing-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  color: white;
+}
+
+.landing-content h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 4rem;
+  font-weight: 700;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.landing-content p {
+  margin: 0 0 2rem 0;
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.75rem 2rem;
+  background-color: #160f23;
+  color: white;
+  text-decoration: none;
+  border-radius: 40px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  opacity: 0.9;
+}
+
+.btn:hover {
+  background-color: #1f1830;
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
