@@ -6,9 +6,9 @@ export default function Landing() {
     <div style={{ width: "100%", height: "100vh", position: "relative" }}>
       <DotGrid
         dotSize={6}
-        gap={15}
-        baseColor="#5227FF"
+        baseColor="#271E37"
         activeColor="#5227FF"
+        gap={25}
         proximity={120}
         shockRadius={250}
         shockStrength={5}
