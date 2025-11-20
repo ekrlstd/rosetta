@@ -1,11 +1,12 @@
 .dot-grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background-color: #060010;
+  z-index: 0;
+  overflow: hidden;
 }
 
 .dot-grid__wrap {
@@ -15,9 +16,7 @@
 }
 
 .dot-grid__canvas {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
-  pointer-events: none;
 }

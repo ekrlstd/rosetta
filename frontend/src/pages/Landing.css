@@ -1,0 +1,60 @@
+body {
+  overflow: hidden;
+  font-family: "Inter";
+}
+
+.landing-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.landing-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  color: white;
+}
+
+.landing-content h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 4rem;
+  font-weight: 700;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.landing-content p {
+  margin: 0 0 2rem 0;
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.75rem 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: white;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.3);
+}
