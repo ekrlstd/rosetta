@@ -94,12 +94,11 @@ export default function Survey() {
       <Navbar />
 
       <div className="survey-content">
+        <h1>Daily Health Survey</h1>
+        <p className="survey-subtitle">
+          Help us understand your migraine patterns
+        </p>
         <div className="survey-card">
-          <h1>Daily Health Survey</h1>
-          <p className="survey-subtitle">
-            Help us understand your migraine patterns
-          </p>
-
           <form onSubmit={handleSubmit}>
             {/* Age */}
             <div className="form-group">
@@ -354,4 +353,3 @@ export default function Survey() {
     </div>
   );
 }
-

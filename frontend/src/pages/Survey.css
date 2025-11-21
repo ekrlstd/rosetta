@@ -15,6 +15,23 @@
   padding: 8rem 2rem 4rem 2rem;
 }
 
+.survey-content h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+  opacity: 0.9;
+  color: white;
+}
+
+.survey-subtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  opacity: 0.7;
+  margin: 0 0 3rem 0;
+  color: white;
+}
+
 .survey-card {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
@@ -23,21 +40,6 @@
   border-radius: 20px;
   padding: 3rem;
   color: white;
-}
-
-.survey-card h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  text-align: center;
-  opacity: 0.9;
-}
-
-.survey-subtitle {
-  text-align: center;
-  font-size: 1.1rem;
-  opacity: 0.7;
-  margin: 0 0 3rem 0;
 }
 
 .form-group {
@@ -217,15 +219,16 @@
     padding: 7rem 1.5rem 3rem 1.5rem;
   }
 
-  .survey-card {
-    padding: 2rem 1.5rem;
-  }
-
-  .survey-card h1 {
-    font-size: 2rem;
+  .survey-content h1 {
+    font-size: 2.5rem;
   }
 
   .survey-subtitle {
     font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .survey-card {
+    padding: 2rem 1.5rem;
   }
 }
