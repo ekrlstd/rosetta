@@ -1,8 +1,13 @@
 import numpy as np
 import joblib
+import os
 
 # Loading the trained model
-MODEL_PATH = r"C:/Users/hp/LNU/rosetta/ml/xgb_migraine_model.pkl"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "..", "..", "..", "ml", "xgb_migraine_model.pkl")
+MODEL_PATH = os.path.abspath(MODEL_PATH)
+
 model = joblib.load(MODEL_PATH)
 
 
