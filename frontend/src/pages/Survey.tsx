@@ -15,6 +15,9 @@ interface SurveyData {
   noise_sensitivity: number;
   number_of_meals: number;
   water_intake: string;
+  caffeine_intake: string;
+  screen_time: string;
+  exercise_days: string;
   sunny: number;
   cloudy: number;
   rainy: number;
@@ -35,6 +38,9 @@ export default function Survey() {
     noise_sensitivity: 0,
     number_of_meals: 3,
     water_intake: "",
+    caffeine_intake: "",
+    screen_time: "",
+    exercise_days: "",
     sunny: 0,
     cloudy: 0,
     rainy: 0,
@@ -43,7 +49,7 @@ export default function Survey() {
 
   const [selectedWeather, setSelectedWeather] = useState<string>("");
 
-  const totalPages = 4; // Changed to 4 pages
+  const totalPages = 5; // Changed to 5 pages
 
   const handleSliderChange = (field: keyof SurveyData, value: number) => {
     setFormData({ ...formData, [field]: value });
@@ -79,7 +85,16 @@ export default function Survey() {
         return;
       }
     } else if (currentPage === 3) {
-      if (!formData.water_intake || !selectedWeather) {
+      if (!formData.water_intake || !formData.caffeine_intake) {
+        alert("Please complete all fields");
+        return;
+      }
+    } else if (currentPage === 4) {
+      if (
+        !formData.screen_time ||
+        !formData.exercise_days ||
+        !selectedWeather
+      ) {
         alert("Please complete all fields");
         return;
       }
@@ -109,7 +124,7 @@ export default function Survey() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.water_intake || !selectedWeather) {
+    if (!formData.screen_time || !formData.exercise_days || !selectedWeather) {
       alert("Please complete all fields");
       return;
     }
@@ -361,7 +376,7 @@ export default function Survey() {
               </div>
             )}
 
-            {/* Page 3: Diet & Environment */}
+            {/* Page 3: Diet */}
             {currentPage === 3 && (
               <div className="survey-page">
                 {/* Number of Meals */}
@@ -427,7 +442,7 @@ export default function Survey() {
                     required
                   >
                     <option value="">Select caffeine intake</option>
-                    <option value="1">1 Cups</option>
+                    <option value="1">1 Cup</option>
                     <option value="2">2 Cups</option>
                     <option value="3">3 Cups</option>
                     <option value="4">4 Cups</option>
@@ -439,7 +454,12 @@ export default function Survey() {
                     <option value="10">10 Cups</option>
                   </select>
                 </div>
+              </div>
+            )}
 
+            {/* Page 4: Lifestyle & Environment */}
+            {currentPage === 4 && (
+              <div className="survey-page">
                 {/* Screen Time*/}
                 <div className="form-group">
                   <label htmlFor="screen_time">Screen Time (Hours)</label>
