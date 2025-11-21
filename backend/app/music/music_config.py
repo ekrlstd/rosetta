@@ -44,7 +44,7 @@ def filter_by_level(level: int):
     filtered = df.copy()
 
     # ----------------------
-    # Level 1 — Optimal
+    # Level 1 — Optimal (0-20%)
     # ----------------------
     if level == 1:
         filtered = between(filtered, "danceability", 0.5, 0.7)
@@ -56,7 +56,7 @@ def filter_by_level(level: int):
         return filtered
 
     # ----------------------
-    # Level 2 — Caution
+    # Level 2 — Caution (21-40%)
     # ----------------------
     if level == 2:
         filtered = between(filtered, "danceability", 0.4, 0.6)
@@ -69,7 +69,7 @@ def filter_by_level(level: int):
         return filtered
 
     # ----------------------
-    # Level 3 — Warning
+    # Level 3 — Warning (41-60%)
     # ----------------------
     if level == 3:
         filtered = between(filtered, "danceability", 0.3, 0.5)
@@ -82,7 +82,7 @@ def filter_by_level(level: int):
         return filtered
 
     # ----------------------
-    # Level 4 — High Risk
+    # Level 4 — High Risk (61-75%)
     # ----------------------
     if level == 4:
         filtered = between(filtered, "danceability", 0.2, 0.4)
@@ -95,9 +95,10 @@ def filter_by_level(level: int):
         return filtered
 
     # ----------------------
-    # Level 5 — Critical
+    # Level 5 — Critical 76-90%)
     # ----------------------
     if level == 5:
+        # PRIMARY strict filter
         filtered = between(filtered, "danceability", 0.1, 0.3)
         filtered = between(filtered, "energy", 0.0, 0.2)
         filtered = between(filtered, "loudness", -30, -20)
@@ -105,10 +106,24 @@ def filter_by_level(level: int):
         filtered = between(filtered, "acousticness", 0.9, 1.0)
         filtered = between(filtered, "instrumentalness", 0.9, 1.0)
         filtered = between(filtered, "valence", 0.9, 1.0)
+
+        # If too few songs, loosen conditions slightly
+        if len(filtered) < 10:
+            temp = df.copy()
+            temp = between(temp, "danceability", 0.1, 0.4)
+            temp = between(temp, "energy", 0.0, 0.3)
+            temp = between(temp, "loudness", -32, -18)
+            temp = temp[temp["mode"] == 1]
+            temp = between(temp, "acousticness", 0.8, 1.0)
+            temp = between(temp, "instrumentalness", 0.7, 1.0)
+            temp = between(temp, "valence", 0.8, 1.0)
+
+            filtered = pd.concat([filtered, temp]).drop_duplicates()
+
         return filtered
 
     # ----------------------
-    # Level 6 — Emergency (Strict)
+    # Level 6 — Emergency (Strict) (91-100%)
     # ----------------------
     if level == 6:
         filtered = between(filtered, "danceability", 0.0, 0.2)
