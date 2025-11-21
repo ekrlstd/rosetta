@@ -271,11 +271,9 @@ const DotGrid: React.FC<DotGridProps> = ({
 
     const throttledMove = throttle(onMove, 50);
     window.addEventListener("mousemove", throttledMove, { passive: true });
-    window.addEventListener("click", onClick);
 
     return () => {
       window.removeEventListener("mousemove", throttledMove);
-      window.removeEventListener("click", onClick);
     };
   }, [
     maxSpeed,
