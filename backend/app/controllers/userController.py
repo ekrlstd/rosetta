@@ -11,7 +11,7 @@ async def greet():
     return UserService.greet()
 
 @router.get("/music/recommend/{percentage}")
-def recommend_music(percentage: int):
+def recommend_music(percentage: float):
     """
     Takes migraine percentage and returns a playlist of 10 songs.
     """
