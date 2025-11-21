@@ -43,100 +43,57 @@ def between(df, col, low, high):
 def filter_by_level(level: int):
     filtered = df.copy()
 
-    # ----------------------
-    # Level 1 — Optimal (0-20%)
-    # ----------------------
+    # ------------------------------
+    # LEVEL 1 (0–25%) → Normal
+    # ------------------------------
     if level == 1:
-        filtered = between(filtered, "danceability", 0.5, 0.7)
-        filtered = between(filtered, "energy", 0.4, 0.6)
-        filtered = between(filtered, "loudness", -18, -12)
-        filtered = between(filtered, "acousticness", 0.3, 0.7)
-        filtered = between(filtered, "instrumentalness", 0.1, 0.5)
-        filtered = between(filtered, "valence", 0.5, 0.7)
+        filtered = between(filtered, "danceability", 0.4, 0.7)
+        filtered = between(filtered, "energy", 0.4, 0.7)
+        filtered = between(filtered, "loudness", -18, -10)
+        filtered = between(filtered, "acousticness", 0.2, 0.6)
+        filtered = between(filtered, "instrumentalness", 0.0, 0.4)
+        filtered = between(filtered, "valence", 0.5, 0.8)
         return filtered
 
-    # ----------------------
-    # Level 2 — Caution (21-40%)
-    # ----------------------
+    # ------------------------------
+    # LEVEL 2 (26–50%) → Caution
+    # ------------------------------
     if level == 2:
-        filtered = between(filtered, "danceability", 0.4, 0.6)
-        filtered = between(filtered, "energy", 0.3, 0.5)
-        filtered = between(filtered, "loudness", -20, -14)
+        filtered = between(filtered, "danceability", 0.3, 0.6)
+        filtered = between(filtered, "energy", 0.25, 0.55)
+        filtered = between(filtered, "loudness", -22, -12)
+        filtered = between(filtered, "acousticness", 0.3, 0.8)
+        filtered = between(filtered, "instrumentalness", 0.1, 0.6)
+        filtered = between(filtered, "valence", 0.5, 0.85)
         filtered = filtered[filtered["mode"] == 1]
-        filtered = between(filtered, "acousticness", 0.5, 0.8)
-        filtered = between(filtered, "instrumentalness", 0.3, 0.6)
-        filtered = between(filtered, "valence", 0.6, 0.8)
         return filtered
 
-    # ----------------------
-    # Level 3 — Warning (41-60%)
-    # ----------------------
+    # ------------------------------
+    # LEVEL 3 (51–75%) → High Risk
+    # ------------------------------
     if level == 3:
-        filtered = between(filtered, "danceability", 0.3, 0.5)
-        filtered = between(filtered, "energy", 0.2, 0.4)
-        filtered = between(filtered, "loudness", -22, -16)
-        filtered = filtered[filtered["mode"] == 1]
-        filtered = between(filtered, "acousticness", 0.6, 0.9)
-        filtered = between(filtered, "instrumentalness", 0.5, 0.8)
-        filtered = between(filtered, "valence", 0.7, 0.9)
+        filtered = between(filtered, "danceability", 0.15, 0.45)       # widened by 0.05 both sides
+        filtered = between(filtered, "energy", 0.05, 0.40)             # slightly lower + slightly higher
+        filtered = between(filtered, "loudness", -30, -15)             # widened by 2 dB
+        filtered = between(filtered, "acousticness", 0.4, 0.95)        # allow more songs
+        filtered = between(filtered, "instrumentalness", 0.2, 0.8)     # lowered min from 0.3 → 0.2
+        filtered = between(filtered, "valence", 0.5, 0.9)              # lowered min 0.6 → 0.5
+        filtered = filtered[filtered["mode"] == 1]                     # keep major key
         return filtered
-
-    # ----------------------
-    # Level 4 — High Risk (61-75%)
-    # ----------------------
+    # ------------------------------
+    # LEVEL 4 (76–100%) → Severe
+    # ------------------------------
     if level == 4:
-        filtered = between(filtered, "danceability", 0.2, 0.4)
-        filtered = between(filtered, "energy", 0.1, 0.3)
-        filtered = between(filtered, "loudness", -25, -18)
-        filtered = filtered[filtered["mode"] == 1]
-        filtered = between(filtered, "acousticness", 0.8, 1.0)
-        filtered = between(filtered, "instrumentalness", 0.7, 1.0)
-        filtered = between(filtered, "valence", 0.8, 1.0)
-        return filtered
-
-    # ----------------------
-    # Level 5 — Critical 76-90%)
-    # ----------------------
-    if level == 5:
-        # PRIMARY strict filter
-        filtered = between(filtered, "danceability", 0.1, 0.3)
+        filtered = between(filtered, "danceability", 0.0, 0.3)
         filtered = between(filtered, "energy", 0.0, 0.2)
-        filtered = between(filtered, "loudness", -30, -20)
+        filtered = between(filtered, "loudness", -35, -20)
+        filtered = between(filtered, "acousticness", 0.7, 1.0)
+        filtered = between(filtered, "instrumentalness", 0.5, 1.0)
+        filtered = between(filtered, "valence", 0.6, 1.0)
         filtered = filtered[filtered["mode"] == 1]
-        filtered = between(filtered, "acousticness", 0.9, 1.0)
-        filtered = between(filtered, "instrumentalness", 0.9, 1.0)
-        filtered = between(filtered, "valence", 0.9, 1.0)
-
-        # If too few songs, loosen conditions slightly
-        if len(filtered) < 10:
-            temp = df.copy()
-            temp = between(temp, "danceability", 0.1, 0.4)
-            temp = between(temp, "energy", 0.0, 0.3)
-            temp = between(temp, "loudness", -32, -18)
-            temp = temp[temp["mode"] == 1]
-            temp = between(temp, "acousticness", 0.8, 1.0)
-            temp = between(temp, "instrumentalness", 0.7, 1.0)
-            temp = between(temp, "valence", 0.8, 1.0)
-
-            filtered = pd.concat([filtered, temp]).drop_duplicates()
-
-        return filtered
-
-    # ----------------------
-    # Level 6 — Emergency (Strict) (91-100%)
-    # ----------------------
-    if level == 6:
-        filtered = between(filtered, "danceability", 0.0, 0.2)
-        filtered = between(filtered, "energy", 0.0, 0.1)
-        filtered = between(filtered, "loudness", -35, -25)
-        filtered = filtered[filtered["mode"] == 1]
-        filtered = filtered[filtered["acousticness"] >= 1.0]
-        filtered = filtered[filtered["instrumentalness"] >= 1.0]
-        filtered = filtered[filtered["valence"] >= 1.0]
         return filtered
 
     return filtered
-
 
 # ---------------------------------------------
 # 3. Generate playlist with Spotify URLs
@@ -147,6 +104,7 @@ def generate_playlist(percentage: int, count: int = 10):
 
     # Fallback if the rules are too strict
     if len(filtered) == 0:
+        print("Fallback: No songs matched the criteria, returning random sample.")
         filtered = df.sample(50)
 
     playlist = filtered.sample(min(count, len(filtered)))
