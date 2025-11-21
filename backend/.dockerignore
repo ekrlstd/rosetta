@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+
+# MacOS System Files
+.DS_Store
+
+# Jupyter Notebooks / Checkpoints
+.ipynb_checkpoints/
+
+# Local Certificates (Mac / Windows)
+*.pem
+*key.pem
+
+# Model training notebooks
+app/ml/*.ipynb
+
+# Git
+.git
+.gitignore
+
+# Logs
+*.log

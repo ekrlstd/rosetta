@@ -18,12 +18,19 @@ mkcert test-spotify-site.local # DO NOT PUT THIS IN THE BACKEND
 127.0.0.1 test-spotify-site.local # past this into the /etc/hosts and save
 
 
+# dont follow this pls.
 uvicorn app.main:app \
   --host test-spotify-site.local \
   --port 5001 \
   --ssl-keyfile test-spotify-site.local-key.pem \
   --ssl-certfile test-spotify-site.local.pem \
   --reload
+
+
+# run the docker file 
+cd backend
+docker build --no-cache -t rosetta-backend .
+docker run -p 8000:8000 rosetta-backend
 
 {
   "age": 28,
@@ -44,3 +51,5 @@ uvicorn app.main:app \
   "weather_rainy": 4,
   "weather_snowy": 8
 }
+
+

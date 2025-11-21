@@ -1,17 +1,47 @@
 import numpy as np
-import joblib
 import os
+import xgboost as xgb
 
-# Loading the trained model
-# aakrish is working.
+# -------------------------------------------------------------------
+# Load JSON model
+# -------------------------------------------------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "..", "..", "..", "ml", "xgb_migraine_model.pkl")
+MODEL_PATH = os.path.join(BASE_DIR, "..", "ml", "xgb_migraine_model.json")
 MODEL_PATH = os.path.abspath(MODEL_PATH)
 
-model = joblib.load(MODEL_PATH)
+print(f"📌 Loading ML model from: {MODEL_PATH}")
+
+model = xgb.Booster()
+model.load_model(MODEL_PATH)
+
+# REAL MODEL FEATURE ORDER
+FEATURE_ORDER = [
+    "age",
+    "stress_level",
+    "gender",
+    "menstrual_cycle",
+    "sleep_duration",
+    "pain_severity",
+    "light_sensitivity",
+    "noise_sensitivity",
+    "food_intake",
+    "water_intake",
+    "caffeine_intake",
+    "exercise_frequency",
+    "screen_time",
+    "weather_sunny",
+    "weather_cloudy",
+    "weather_rainy",
+    "weather_snowy"
+]
+
+print("✅ Model loaded successfully with 17 features.")
+print("🔎 Feature order:", FEATURE_ORDER)
 
 
-# Prediction function
+# -------------------------------------------------------------------
+# Prediction (correct, final)
+# -------------------------------------------------------------------
 def predict_migraine_score(
     age,
     stress_level,
@@ -31,55 +61,30 @@ def predict_migraine_score(
     caffeine_intake,
     screen_time
 ):
-    # We're taking in frontend variables, builds a feature vector, runs the ML model, and returns the predicted migraine score.
 
-    # Convert inputs into the correct shape (1 row, 14 features)
-    input_features = np.array([[
-        age,
-        stress_level,
-        gender,
-        menstrual_cycle,
-        sleep_duration,
-        pain_severity,
-        light_sensitivity,
-        noise_sensitivity,
-        food_intake,
-        water_intake,
-        caffeine_intake,
-        exercise_frequency,
-        screen_time,
-        weather_sunny,
-        weather_cloudy,
-        weather_rainy,
-        weather_snowy
+    # Build feature array IN EXACT MODEL ORDER:
+    features = np.array([[
+        age,                # 1
+        stress_level,       # 2
+        gender,             # 3
+        menstrual_cycle,    # 4
+        sleep_duration,     # 5
+        pain_severity,      # 6
+        light_sensitivity,  # 7
+        noise_sensitivity,  # 8
+        food_intake,        # 9
+        water_intake,       # 10
+        caffeine_intake,    # 11
+        exercise_frequency, # 12
+        screen_time,        # 13
+        weather_sunny,      # 14
+        weather_cloudy,     # 15
+        weather_rainy,      # 16
+        weather_snowy       # 17
     ]], dtype=float)
 
-    # Getting prediction from the model
-    prediction = model.predict(input_features)
+    dmatrix = xgb.DMatrix(features, feature_names=FEATURE_ORDER)
+
+    prediction = model.predict(dmatrix)
 
     return float(prediction[0])
-
-
-# Testing
-if __name__ == "__main__":
-    print("Testing ML prediction...")
-    result = predict_migraine_score(
-        age=28,
-        stress_level=8,
-        gender=1,
-        menstrual_cycle=0,
-        sleep_duration=2,
-        pain_severity=7,
-        light_sensitivity=1,
-        noise_sensitivity=1,
-        food_intake=3,
-        water_intake=4,
-        weather_sunny=0,
-        weather_rainy=1,
-        weather_cloudy=0,
-        weather_snowy=0,
-        exercise_frequency=1,
-        caffeine_intake=4,
-        screen_time=8
-    )
-    print("Predicted Migraine Score:", result)
