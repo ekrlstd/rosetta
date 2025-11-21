@@ -173,44 +173,77 @@
   box-shadow: 0 4px 12px rgba(82, 39, 255, 0.3);
 }
 
-/* Submit Button */
+/* Navigation Buttons */
+.survey-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.nav-btn {
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Make submit button same size as other nav buttons */
 .submit-btn {
-  width: 100%;
-  padding: 1rem 2rem;
-  margin-top: 1rem;
+  min-width: 100px;
+  padding: 0.625rem 1.5rem;
   background: linear-gradient(135deg, #5227ff, #7c3aed);
   border: none;
-  border-radius: 12px;
-  color: white;
-  font-size: 1.1rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
   font-weight: 600;
-  font-family: "Inter", sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(82, 39, 255, 0.3);
 }
 
+.nav-btn:hover:not(:disabled),
 .submit-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(82, 39, 255, 0.5);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* Scrollbar styling */
-.survey-container::-webkit-scrollbar {
-  width: 8px;
+.submit-btn:hover {
+  background: linear-gradient(135deg, #5e35ff, #8a5aed);
+  box-shadow: 0 6px 16px rgba(82, 39, 255, 0.4);
 }
 
-.survey-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
-.survey-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+.exit-survey-btn {
+  background: none;
+  border: none;
+  color: #8e8e93;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s ease;
+  text-decoration: underline;
+  white-space: nowrap;
 }
 
-.survey-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+.exit-survey-btn:hover {
+  color: #fff;
 }
 
 .progress-container {
@@ -261,75 +294,20 @@
   }
 }
 
-.page-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 1.5rem;
-  text-align: center;
+/* Scrollbar styling */
+.survey-container::-webkit-scrollbar {
+  width: 8px;
 }
 
-.survey-navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
+.survey-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.nav-btn {
-  padding: 0.625rem 1.5rem;
-  border: none;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-width: 100px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.survey-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
 }
 
-.prev-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.12);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.prev-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.next-btn:hover,
-.submit-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.next-btn:active,
-.submit-btn:active,
-.prev-btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.exit-survey-btn {
-  background: none;
-  border: none;
-  color: #8e8e93;
-  font-size: 0.75rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  transition: color 0.2s ease;
-  text-decoration: underline;
-  white-space: nowrap;
-}
-
-.exit-survey-btn:hover {
-  color: #fff;
+.survey-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }

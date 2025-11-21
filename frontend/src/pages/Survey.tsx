@@ -413,6 +413,84 @@ export default function Survey() {
                   </select>
                 </div>
 
+                {/* Caffeine Intake */}
+                <div className="form-group">
+                  <label htmlFor="caffeine_intake">
+                    Caffeine Intake (Cups of Coffee)
+                  </label>
+                  <select
+                    id="caffeine_intake"
+                    value={formData.caffeine_intake}
+                    onChange={(e) =>
+                      handleInputChange("caffeine_intake", e.target.value)
+                    }
+                    required
+                  >
+                    <option value="">Select caffeine intake</option>
+                    <option value="1">1 Cups</option>
+                    <option value="2">2 Cups</option>
+                    <option value="3">3 Cups</option>
+                    <option value="4">4 Cups</option>
+                    <option value="5">5 Cups</option>
+                    <option value="6">6 Cups</option>
+                    <option value="7">7 Cups</option>
+                    <option value="8">8 Cups</option>
+                    <option value="9">9 Cups</option>
+                    <option value="10">10 Cups</option>
+                  </select>
+                </div>
+
+                {/* Screen Time*/}
+                <div className="form-group">
+                  <label htmlFor="screen_time">Screen Time (Hours)</label>
+                  <select
+                    id="screen_time"
+                    value={formData.screen_time}
+                    onChange={(e) =>
+                      handleInputChange("screen_time", e.target.value)
+                    }
+                    required
+                  >
+                    <option value="">Select screen time</option>
+                    <option value="1">1 Hour</option>
+                    <option value="2">2 Hours</option>
+                    <option value="3">3 Hours</option>
+                    <option value="4">4 Hours</option>
+                    <option value="5">5 Hours</option>
+                    <option value="6">6 Hours</option>
+                    <option value="7">7 Hours</option>
+                    <option value="8">8 Hours</option>
+                    <option value="9">9 Hours</option>
+                    <option value="10">10 Hours</option>
+                    <option value="11">11 Hours</option>
+                    <option value="12">12 Hours</option>
+                  </select>
+                </div>
+
+                {/* Exercise*/}
+                <div className="form-group">
+                  <label htmlFor="exercise_days">
+                    Exercise Days (Previous Seven Days)
+                  </label>
+                  <select
+                    id="exercise_days"
+                    value={formData.exercise_days}
+                    onChange={(e) =>
+                      handleInputChange("exercise_days", e.target.value)
+                    }
+                    required
+                  >
+                    <option value="">Select exercise days</option>
+                    <option value="1">1 Day</option>
+                    <option value="2">2 Days</option>
+                    <option value="3">3 Days</option>
+                    <option value="4">4 Days</option>
+                    <option value="5">5 Days</option>
+                    <option value="6">6 Days</option>
+                    <option value="7">7 Days</option>
+                  </select>
+                </div>
+
                 {/* Weather */}
                 <div className="form-group">
                   <label htmlFor="weather">Weather Today</label>
