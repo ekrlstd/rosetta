@@ -213,22 +213,123 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .survey-content {
-    padding: 7rem 1.5rem 3rem 1.5rem;
-  }
+.progress-container {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .survey-content h1 {
-    font-size: 2.5rem;
-  }
+.progress-bar {
+  width: 100%;
+  max-width: 400px;
+  height: 8px;
+  background-color: rgba(82, 39, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
 
-  .survey-subtitle {
-    font-size: 1rem;
-    margin-bottom: 2rem;
-  }
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #5227ff, #7c4dff);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
 
-  .survey-card {
-    padding: 2rem 1.5rem;
+.progress-text {
+  text-align: center;
+  color: #8e8e93;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.survey-page {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.survey-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.nav-btn {
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.prev-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.prev-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.next-btn:hover,
+.submit-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.next-btn:active,
+.submit-btn:active,
+.prev-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.exit-survey-btn {
+  background: none;
+  border: none;
+  color: #8e8e93;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s ease;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.exit-survey-btn:hover {
+  color: #fff;
 }
