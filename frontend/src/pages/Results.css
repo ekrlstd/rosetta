@@ -1,0 +1,216 @@
+body {
+  overflow-y: auto !important;
+  font-family: "Inter";
+}
+
+.about-container {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #060010;
+}
+
+.about-content {
+  position: relative;
+  z-index: 10;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem 2rem;
+  color: white;
+}
+
+.about-content h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 0 0 3rem 0;
+  text-align: center;
+  background: linear-gradient(135deg, #fff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Top Section - Side by Side Layout */
+.top-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+/* Music and Results Sections */
+.music-section, .results-section {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.music-section h2, .results-section h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #fff;
+  opacity: 0.95;
+}
+
+.section-description {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  opacity: 0.85;
+  margin: 0 0 1.5rem 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Spotify Embed - Original Style */
+.spotify-embed-large {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.spotify-embed-large iframe {
+  border-radius: 12px;
+}
+
+/* Results Section - Empty State */
+.results-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+  min-height: 300px;
+}
+
+.placeholder-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.results-placeholder p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* Yoga Section */
+.yoga-section {
+  margin-bottom: 3rem;
+}
+
+.yoga-section h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 1rem 0;
+  text-align: center;
+  opacity: 0.95;
+}
+
+.yoga-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.yoga-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.yoga-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+.yoga-image-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+
+.yoga-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.yoga-card:hover .yoga-image {
+  transform: scale(1.1);
+}
+
+.yoga-info {
+  padding: 1.5rem;
+}
+
+.yoga-info h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.75rem;
+  opacity: 0.95;
+}
+
+.yoga-info p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+/* Scrollbar styling */
+.about-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.about-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.about-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.about-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .top-section {
+    grid-template-columns: 1fr;
+  }
+  
+  .yoga-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .about-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .yoga-grid {
+    grid-template-columns: 1fr;
+  }
+}
