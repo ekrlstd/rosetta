@@ -75,7 +75,7 @@ export default function Survey() {
     e.preventDefault();
     console.log("Survey submitted:", formData);
     alert("Thank you for submitting your health data!");
-    navigate("/");
+    navigate("/results");
   };
 
   return (
