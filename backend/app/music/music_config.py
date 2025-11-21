@@ -139,7 +139,7 @@ def generate_playlist(percentage: int, count: int = 10):
     result = []
     for _, row in playlist.iterrows():
         track = row.to_dict()
-        track["spotify_url"] = f"https://open.spotify.com/track/{row['track_id']}"
+        track["spotify_url"] = f"https://open.spotify.com/embed/track/{row['track_id']}"
         result.append(track)
 
     return result
