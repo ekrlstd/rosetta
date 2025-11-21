@@ -1,13 +1,13 @@
 def get_recommendations_for_level(level: int):
     """
-    Returns yoga, exercises, and meditation recommendations 
-    for a specific migraine severity level (1–4).
+    Returns yoga, exercises, meditation, and massage recommendations 
+    for migraine severity levels (1–4).
     """
 
     levels = {
-        # ---------------------------------------
+        # ---------------------------------------------------
         # LEVEL 1 (0–25%) — Mild Episodic
-        # ---------------------------------------
+        # ---------------------------------------------------
         1: {
             "yoga": [
                 "Cat-Cow",
@@ -22,14 +22,19 @@ def get_recommendations_for_level(level: int):
             ],
             "meditation": [
                 "2–3 Minute Mindfulness",
-                "Breathing Reset (Box Breathing)",
-                "Short Gratitude Breathing"
+                "Box Breathing (4-4-4-4)",
+                "Gratitude Breathing"
+            ],
+            "massage": [
+                "Gentle Scalp Massage",
+                "Light Temple Circles",
+                "Occipital Base Massage (Thumb Glide)"
             ]
         },
 
-        # ---------------------------------------
+        # ---------------------------------------------------
         # LEVEL 2 (25–50%) — Moderate Episodic
-        # ---------------------------------------
+        # ---------------------------------------------------
         2: {
             "yoga": [
                 "Child’s Pose",
@@ -44,14 +49,20 @@ def get_recommendations_for_level(level: int):
             ],
             "meditation": [
                 "3–5 Minute Body Scan",
-                "Calm Sound Meditation",
-                "Diaphragmatic Breathing"
+                "Diaphragmatic Breathing",
+                "Soft Ambient Meditation"
+            ],
+            "massage": [
+                "Neck & Shoulder Massage (Finger Glide)",
+                "Jaw Relaxation Massage",
+                "Ear-to-Shoulder Pressure Release",
+                "Upper Trap (Pin & Stretch)"
             ]
         },
 
-        # ---------------------------------------
+        # ---------------------------------------------------
         # LEVEL 3 (50–75%) — Severe High-Frequency
-        # ---------------------------------------
+        # ---------------------------------------------------
         3: {
             "yoga": [
                 "Legs-Up-The-Wall",
@@ -68,12 +79,18 @@ def get_recommendations_for_level(level: int):
                 "5–7 Min Grounding Meditation",
                 "Soft Ambience Breathing",
                 "Guided Tension Release"
+            ],
+            "massage": [
+                "Temple & Forehead Pressure (Very Gentle)",
+                "Occipital Release (Hold Technique)",
+                "Sinus Drainage Massage (Light Stroke)",
+                "Chevron Scalp Massage"
             ]
         },
 
-        # ---------------------------------------
+        # ---------------------------------------------------
         # LEVEL 4 (75–100%) — Very Severe Chronic
-        # ---------------------------------------
+        # ---------------------------------------------------
         4: {
             "yoga": [
                 "Supported Child’s Pose",
@@ -84,8 +101,14 @@ def get_recommendations_for_level(level: int):
             "exercises": [],
             "meditation": [
                 "7–10 Min Migraine Relief Meditation",
-                "Low-Stimulation Breathing (4–6 Pattern)",
+                "4–6 Rhythmic Breathing",
                 "Passive Sensory Reduction Audio"
+            ],
+            "massage": [
+                "Feather-Light Scalp Touch",
+                "Self-Pressure at Base of Skull (No Circles)",
+                "No-Rub Temple Hold (Just Light Pressure)",
+                "Cold Pack on Forehead or Neck"
             ]
         }
     }
