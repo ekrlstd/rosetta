@@ -1,12 +1,50 @@
+import { useState, useEffect } from "react";
 import DotGrid from "../components/DotGrid";
 import Navbar from "../components/Navbar";
 import "./Results.css";
 
 type SeverityLevel = 1 | 2 | 3 | 4;
 
+interface MLResults {
+  severityLevel: SeverityLevel;
+  musicPlaylistUrl: string;
+  resultsData?: {
+    score: number;
+    frequency: string;
+    triggers: string[];
+    recommendation: string;
+  };
+}
+
 export default function Results() {
-  // This will be set automatically based on user's assessment results
-  const severityLevel: SeverityLevel = 4; // Default - will come from your assessment data
+  // State to hold ML results
+  const [mlData, setMlData] = useState<MLResults>({
+    severityLevel: 2, // Default
+    musicPlaylistUrl: "https://open.spotify.com/embed/track/6MMrsE9vd6ZzsElO5nwm6h", // Default
+    resultsData: undefined
+  });
+
+  // This is where you'll fetch data from your ML model
+  useEffect(() => {
+    // Example: Fetch ML results from your backend
+    const fetchMLResults = async () => {
+      try {
+        const response = await fetch('/api/get-ml-results'); // Your ML endpoint
+        const data = await response.json();
+        
+        setMlData({
+          severityLevel: data.severityLevel,
+          musicPlaylistUrl: data.musicPlaylistUrl,
+          resultsData: data.resultsData
+        });
+      } catch (error) {
+        console.error('Error fetching ML results:', error);
+      }
+    };
+
+    // Uncomment when your ML endpoint is ready
+    // fetchMLResults();
+  }, []);
 
   const yogaData: Record<SeverityLevel, Array<{name: string, description: string, image: string}>> = {
     1: [
@@ -23,7 +61,7 @@ export default function Results() {
     ],
     3: [
       { name: "Legs-Up-The-Wall", description: "Deep relaxation for severe headaches.", image: "https://cdn.yogajournal.com/wp-content/uploads/2021/12/Legs-Up-the-Wall-Pose_Andrew-Clark_2400x1350.jpeg" },
-      {name: "Reclining Bound Angle", description: "Opens the chest and promotes deep breathing.", image: "https://media.yogavastu.com/wp-content/uploads/2020/01/2-supta-baddhakonasana-student-Iyengar-yoga-restorative-pranayama-strengthen-foundations-1600x1000.jpg" },
+      { name: "Reclining Bound Angle", description: "Opens the chest and promotes deep breathing.", image: "https://media.yogavastu.com/wp-content/uploads/2020/01/2-supta-baddhakonasana-student-Iyengar-yoga-restorative-pranayama-strengthen-foundations-1600x1000.jpg" },
       { name: "Corpse Pose", description: "Complete relaxation to reset the nervous system.", image: "https://cdn.yogajournal.com/wp-content/uploads/2012/03/savasana-corpse-pose.jpg?width=730" },
       { name: "Supported Child's Pose", description: "Extra support for severe pain.", image: "https://www.theyogacollective.com/wp-content/uploads/2019/10/4143473057707883372_IMG_8546-2-e1572149256273.jpg" }
     ],
@@ -53,13 +91,13 @@ export default function Results() {
         <h1>Your Relief Hub</h1>
 
         <div className="top-section">
-          {/* Music Section - Original Spotify Design */}
+          {/* Music Section - Dynamic from ML */}
           <div className="music-section">
             <h2>Relief Music</h2>
             <p className="section-description">Curated music therapy to help ease your migraine symptoms</p>
             <div className="spotify-embed-large">
               <iframe
-                src="https://open.spotify.com/embed/track/6MMrsE9vd6ZzsElO5nwm6h"
+                src={mlData.musicPlaylistUrl}
                 width="100%"
                 height="352"
                 frameBorder="0"
@@ -71,23 +109,64 @@ export default function Results() {
             </div>
           </div>
 
-          {/* Results Section - Empty */}
+          {/* Results Section - Dynamic from ML */}
           <div className="results-section">
             <h2>Your Results</h2>
-            <p className="section-description">Your migraine assessment results will appear here</p>
-            <div className="results-placeholder">
-              <div className="placeholder-icon">📊</div>
-              <p>Complete the assessment to see your personalized results</p>
-            </div>
+            <p className="section-description">Your migraine assessment results</p>
+            
+            {mlData.resultsData ? (
+              <div className="results-content">
+                <div className="result-item">
+                  <h3>Severity Level</h3>
+                  <p className="severity-score">Level {mlData.severityLevel}</p>
+                </div>
+                
+                <div className="result-item">
+                  <h3>Assessment Score</h3>
+                  <p className="score-value">{mlData.resultsData.score}%</p>
+                </div>
+                
+                <div className="result-item">
+                  <h3>Frequency</h3>
+                  <p>{mlData.resultsData.frequency}</p>
+                </div>
+                
+                {mlData.resultsData.triggers && mlData.resultsData.triggers.length > 0 && (
+                  <div className="result-item">
+                    <h3>Identified Triggers</h3>
+                    <ul className="triggers-list">
+                      {mlData.resultsData.triggers.map((trigger, idx) => (
+                        <li key={idx}>{trigger}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                
+                <div className="result-item">
+                  <h3>Recommendation</h3>
+                  <p>{mlData.resultsData.recommendation}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="results-placeholder">
+                <div className="placeholder-icon">📊</div>
+                <p>Complete the assessment to see your personalized results</p>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Yoga Exercises Section - Auto-updates based on severity level */}
+        {/* Yoga Exercises Section - Auto-updates based on ML severity level */}
         <div className="yoga-section">
-          <h2>Recommended Yoga & Stretches</h2>
-          <p className="section-description">Gentle exercises and poses designed for migraine relief</p>
+          <h2>Recommended Yoga & Stretches - Level {mlData.severityLevel}</h2>
+          <p className="section-description">
+            {mlData.severityLevel === 1 && "Gentle exercises for mild migraine relief"}
+            {mlData.severityLevel === 2 && "Moderate exercises to reduce migraine intensity"}
+            {mlData.severityLevel === 3 && "Restorative poses for severe episodes"}
+            {mlData.severityLevel === 4 && "Minimal movement for debilitating pain"}
+          </p>
           <div className="yoga-grid">
-            {yogaData[severityLevel].map((pose, index) => (
+            {yogaData[mlData.severityLevel].map((pose, index) => (
               <div key={index} className="yoga-card">
                 <div className="yoga-image-container">
                   <img src={pose.image} alt={pose.name} className="yoga-image" />
