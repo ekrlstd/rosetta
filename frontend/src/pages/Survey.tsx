@@ -135,7 +135,7 @@ export default function Survey() {
             screen_time: screenTimeValue
         };
 
-        console.log("Sending payload →", payload);
+        // console.log("Sending payload →", payload);
 
         try {
             const response = await fetch("http://localhost:8000/predict", {
@@ -155,7 +155,7 @@ export default function Survey() {
             }
 
             const data = await response.json();
-            console.log("Prediction result:", data);
+            // console.log("Prediction result:", data);
             navigate("/results", { state: data });
 
         } catch (error) {
