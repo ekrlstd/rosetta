@@ -1,277 +1,252 @@
-import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import DotGrid from "../components/DotGrid";
 import Navbar from "../components/Navbar";
 import "./Results.css";
 
-type SeverityLevel = 1 | 2 | 3 | 4;
+interface Song {
+  track_name: string;
+  artists: string;
+  album_name: string;
+  spotify_url: string;
+  duration_ms: number;
+}
 
-interface MLResults {
-  severityLevel: SeverityLevel;
-  musicPlaylistUrl: string;
-  resultsData?: {
-    score: number;
-    frequency: string;
-    triggers: string[];
-    recommendation: string;
-  };
+interface WellnessRecommendations {
+  yoga: string[];
+  exercises: string[];
+  meditation: string[];
+  massage: string[];
+}
+
+interface BackendResponse {
+  predicted_migraine_score: number;
+  severity_level: number;
+  playlist_length: number;
+  songs: Song[];
+  wellness_recommendations: WellnessRecommendations;
 }
 
 export default function Results() {
-  // State to hold ML results
-  const [mlData, setMlData] = useState<MLResults>({
-    severityLevel: 2, // Default
-    musicPlaylistUrl:
-      "https://open.spotify.com/embed/track/6MMrsE9vd6ZzsElO5nwm6h", // Default
-    resultsData: undefined,
-  });
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [data, setData] = useState<BackendResponse | null>(null);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
 
-  // This is where you'll fetch data from your ML model
   useEffect(() => {
-    // Example: Fetch ML results from your backend
-    const fetchMLResults = async () => {
-      try {
-        const response = await fetch("/api/get-ml-results"); // Your ML endpoint
-        const data = await response.json();
+    const backendData = location.state as BackendResponse;
+    if (backendData) {
+      console.log("Received backend data:", backendData);
+      setData(backendData);
+    }
+  }, [location.state]);
 
-        setMlData({
-          severityLevel: data.severityLevel,
-          musicPlaylistUrl: data.musicPlaylistUrl,
-          resultsData: data.resultsData,
-        });
-      } catch (error) {
-        console.error("Error fetching ML results:", error);
-      }
+  const getSeverityInfo = (level: number) => {
+    const info: Record<number, { label: string; color: string; emoji: string; description: string }> = {
+      1: { label: "Mild", color: "#10b981",description: "Low severity - manageable with light activities" },
+      2: { label: "Moderate", color: "#f59e0b", description: "Moderate severity - rest and gentle relief methods recommended" },
+      3: { label: "Severe", color: "#ef4444",description: "High severity - significant rest and relief measures needed" },
+      4: { label: "Critical", color: "#dc2626", description: "Very severe - complete rest and immediate relief required" }
     };
-
-    // Uncomment when your ML endpoint is ready
-    // fetchMLResults();
-  }, []);
-
-  const yogaData: Record<
-    SeverityLevel,
-    Array<{ name: string; description: string; image: string }>
-  > = {
-    1: [
-      {
-        name: "Cat-Cow",
-        description: "Calms the nervous system and relieves tension.",
-        image:
-          "https://media1.popsugar-assets.com/files/thumbor/FcTiEzA4dpzP5LND0I0csu36jQE=/1456x1456/filters:format_auto():quality(85):extract_cover()/2025/01/10/960/n/1922729/tmp_TSf6dQ_46ee51111cabbf45_PS24_Fitness_CatCow_Horizontal.jpg",
-      },
-      {
-        name: "Mountain Pose",
-        description: "Improves posture and reduces tension headaches.",
-        image:
-          "https://yogaindiafoundation.com/wp-content/uploads/2017/11/Parvatasana-scaled.jpeg",
-      },
-      {
-        name: "Standing Forward Fold",
-        description: "Releases neck and shoulder tension.",
-        image:
-          "https://cdn.yogajournal.com/wp-content/uploads/2021/11/Uttanasana-Pose_Andrew-Clark_2400x1350.jpeg",
-      },
-      {
-        name: "Seated Neck Stretch",
-        description: "Gently stretches neck muscles.",
-        image:
-          "https://publish.purewow.net/wp-content/uploads/sites/2/2017/02/yoga-neck.jpg?fit=680%2C860",
-      },
-    ],
-    2: [
-      {
-        name: "Child's Pose",
-        description: "Calms the mind and relieves stress.",
-        image:
-          "https://images.unsplash.com/photo-1593810450967-f9c42742e326?w=400",
-      },
-      {
-        name: "Seated Twist",
-        description: "Releases tension in the spine.",
-        image:
-          "https://cdn.yogajournal.com/wp-content/uploads/2020/10/ccd06167.jpg",
-      },
-      {
-        name: "Bridge Pose",
-        description: "Promotes relaxation and improves circulation.",
-        image:
-          "https://images.squarespace-cdn.com/content/v1/5ea57caad08f387b2e9827bd/1589065441325-J7E0I26U8JDIYZC3DN10/Straight%2BArm%2BBridge.jpg",
-      },
-      {
-        name: "Supported Forward Fold",
-        description: "Deep stretching for moderate tension.",
-        image:
-          "https://www.theyogacollective.com/wp-content/uploads/2019/11/AdobeStock_193776776-e1572640128210.jpeg",
-      },
-    ],
-    3: [
-      {
-        name: "Legs-Up-The-Wall",
-        description: "Deep relaxation for severe headaches.",
-        image:
-          "https://cdn.yogajournal.com/wp-content/uploads/2021/12/Legs-Up-the-Wall-Pose_Andrew-Clark_2400x1350.jpeg",
-      },
-      {
-        name: "Reclining Bound Angle",
-        description: "Opens the chest and promotes deep breathing.",
-        image:
-          "https://media.yogavastu.com/wp-content/uploads/2020/01/2-supta-baddhakonasana-student-Iyengar-yoga-restorative-pranayama-strengthen-foundations-1600x1000.jpg",
-      },
-      {
-        name: "Corpse Pose",
-        description: "Complete relaxation to reset the nervous system.",
-        image:
-          "https://cdn.yogajournal.com/wp-content/uploads/2012/03/savasana-corpse-pose.jpg?width=730",
-      },
-      {
-        name: "Supported Child's Pose",
-        description: "Extra support for severe pain.",
-        image:
-          "https://www.theyogacollective.com/wp-content/uploads/2019/10/4143473057707883372_IMG_8546-2-e1572149256273.jpg",
-      },
-    ],
-    4: [
-      {
-        name: "Supported Savasana",
-        description: "Complete rest with full body support.",
-        image:
-          "https://media.yogauonline.com/app/uploads/2022/08/06025845/0.-How-to-practice-Supported-Savasana-or-Relaxation-Pose-also-known-as-Salamba-Savasana-1.webp",
-      },
-      {
-        name: "Restorative Side-Lying",
-        description: "Gentle position that minimizes movement.",
-        image:
-          "https://media.yogauonline.com/app/uploads/2023/07/10001407/3-Variation-of-Side-Lying-Supported-Stretch-Pose-arm-variation.webp",
-      },
-      {
-        name: "Gentle Supine Relaxation",
-        description: "Minimal movement for debilitating pain.",
-        image:
-          "https://cdn.prod.website-files.com/67691f03eb5bfa3289b3dae7/67691f03eb5bfa3289b3ea25_How-To-Do-Reclined-Spinal-Twist-Pose.jpg",
-      },
-    ],
+    return info[level] || info[2];
   };
+
+  if (!data) {
+    return (
+      <div className="about-container">
+        <DotGrid dotSize={6} baseColor="#271E37" activeColor="#5227FF" gap={25} proximity={120} shockRadius={250} shockStrength={5} resistance={750} returnDuration={1.5} />
+        <Navbar />
+        <div className="about-content">
+          <h1>Your Relief Hub</h1>
+          <div className="results-placeholder">
+            <div className="placeholder-icon">📊</div>
+            <p>No assessment data found</p>
+            <button className="take-assessment-btn" onClick={() => navigate('/survey')}>Take Assessment</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const severityInfo = getSeverityInfo(data.severity_level);
+  const percentage = data.predicted_migraine_score || 0;
+  
+  // Calculate circle progress (smaller size)
+  const radius = 75;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
     <div className="about-container">
-      <DotGrid
-        dotSize={6}
-        baseColor="#271E37"
-        activeColor="#5227FF"
-        gap={25}
-        proximity={120}
-        shockRadius={250}
-        shockStrength={5}
-        resistance={750}
-        returnDuration={1.5}
-      />
+      <DotGrid dotSize={6} baseColor="#271E37" activeColor="#5227FF" gap={25} proximity={120} shockRadius={250} shockStrength={5} resistance={750} returnDuration={1.5} />
       <Navbar />
-
+      
       <div className="about-content">
         <h1>Your Relief Hub</h1>
 
         <div className="top-section">
-          {/* Music Section - Dynamic from ML */}
+          {/* Music Section with Personalized Playlist */}
           <div className="music-section">
-            <h2>Relief Music</h2>
-            <p className="section-description">
-              Curated music therapy to help ease your migraine symptoms
-            </p>
-            <div className="spotify-embed-large">
-              <iframe
-                src={mlData.musicPlaylistUrl}
-                width="100%"
-                height="352"
-                frameBorder="0"
-                allowFullScreen
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                title="Spotify Music Player"
-              ></iframe>
-            </div>
-          </div>
-
-          {/* Results Section - Dynamic from ML */}
-          <div className="results-section">
-            <h2>Your Results</h2>
-            <p className="section-description">
-              Your migraine assessment results
-            </p>
-
-            {mlData.resultsData ? (
-              <div className="results-content">
-                <div className="result-item">
-                  <h3>Severity Level</h3>
-                  <p className="severity-score">Level {mlData.severityLevel}</p>
+            <h2>Your Personalized Relief Playlist</h2>
+            <p className="section-description">{data.playlist_length} songs curated for your migraine level</p>
+            
+            {data.songs && data.songs.length > 0 && (
+              <>
+                <div className="spotify-embed-large">
+                  <iframe
+                    src={data.songs[currentSongIndex].spotify_url}
+                    width="100%"
+                    height="352"
+                    frameBorder="0"
+                    allowFullScreen
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                    title={`Spotify Player - ${data.songs[currentSongIndex].track_name}`}
+                  ></iframe>
                 </div>
 
-                <div className="result-item">
-                  <h3>Assessment Score</h3>
-                  <p className="score-value">{mlData.resultsData.score}%</p>
+                {/* Song Navigation */}
+                <div className="song-navigation">
+                  <button 
+                    onClick={() => setCurrentSongIndex(Math.max(0, currentSongIndex - 1))}
+                    disabled={currentSongIndex === 0}
+                    className="song-nav-btn"
+                  >
+                    ← Previous
+                  </button>
+                  <span className="song-counter">
+                    {currentSongIndex + 1} / {data.songs.length}
+                  </span>
+                  <button 
+                    onClick={() => setCurrentSongIndex(Math.min(data.songs.length - 1, currentSongIndex + 1))}
+                    disabled={currentSongIndex === data.songs.length - 1}
+                    className="song-nav-btn"
+                  >
+                    Next →
+                  </button>
                 </div>
 
-                <div className="result-item">
-                  <h3>Frequency</h3>
-                  <p>{mlData.resultsData.frequency}</p>
+                {/* Current Song Info */}
+                <div className="current-song-info">
+                  <h4>{data.songs[currentSongIndex].track_name}</h4>
+                  <p>{data.songs[currentSongIndex].artists}</p>
+                  <p className="album-name">{data.songs[currentSongIndex].album_name}</p>
                 </div>
-
-                {mlData.resultsData.triggers &&
-                  mlData.resultsData.triggers.length > 0 && (
-                    <div className="result-item">
-                      <h3>Identified Triggers</h3>
-                      <ul className="triggers-list">
-                        {mlData.resultsData.triggers.map((trigger, idx) => (
-                          <li key={idx}>{trigger}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                <div className="result-item">
-                  <h3>Recommendation</h3>
-                  <p>{mlData.resultsData.recommendation}</p>
-                </div>
-              </div>
-            ) : (
-              <div className="results-placeholder">
-                <h1>
-                  Migraine score is: <br /> 65%
-                </h1>
-              </div>
+              </>
             )}
           </div>
-        </div>
 
-        {/* Yoga Exercises Section - Auto-updates based on ML severity level */}
-        <div className="yoga-section">
-          <h2>Recommended Yoga & Stretches - Level {mlData.severityLevel}</h2>
-          <p className="section-description">
-            {mlData.severityLevel === 1 &&
-              "Gentle exercises for mild migraine relief"}
-            {mlData.severityLevel === 2 &&
-              "Moderate exercises to reduce migraine intensity"}
-            {mlData.severityLevel === 3 &&
-              "Restorative poses for severe episodes"}
-            {mlData.severityLevel === 4 &&
-              "Minimal movement for debilitating pain"}
-          </p>
-          <div className="yoga-grid">
-            {yogaData[mlData.severityLevel].map((pose, index) => (
-              <div key={index} className="yoga-card">
-                <div className="yoga-image-container">
-                  <img
-                    src={pose.image}
-                    alt={pose.name}
-                    className="yoga-image"
-                  />
+          {/* Results Section with ML Prediction */}
+          <div className="results-section">
+            <h2>Your Assessment Results</h2>
+            <p className="section-description">AI-powered migraine severity analysis</p>
+            
+            <div className="results-content">
+              {/* Circular Severity Score Display */}
+              <div className="severity-display">
+                <div className="circular-progress">
+                  <svg className="progress-ring" width="220" height="220">
+                    {/* Background circle */}
+                    <circle
+                      className="progress-ring-bg"
+                      stroke="rgba(255, 255, 255, 0.1)"
+                      strokeWidth="14"
+                      fill="transparent"
+                      r={radius}
+                      cx="110"
+                      cy="110"
+                    />
+                    {/* Progress circle */}
+                    <circle
+                      className="progress-ring-circle"
+                      stroke={severityInfo.color}
+                      strokeWidth="14"
+                      fill="transparent"
+                      r={radius}
+                      cx="110"
+                      cy="110"
+                      style={{
+                        strokeDasharray: circumference,
+                        strokeDashoffset: strokeDashoffset,
+                        transition: 'stroke-dashoffset 1s ease',
+                        transform: 'rotate(-90deg)',
+                        transformOrigin: '50% 50%'
+                      }}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  
+                  {/* Center content */}
+                  <div className="progress-content">
+                    <div className="severity-emoji">{severityInfo.emoji}</div>
+                    <div className="percentage-value" style={{ color: severityInfo.color }}>
+                      {percentage.toFixed(1)}%
+                    </div>
+                    <div className="severity-label" style={{ color: severityInfo.color }}>
+                      {severityInfo.label}
+                    </div>
+                  </div>
                 </div>
-                <div className="yoga-info">
-                  <h3>{pose.name}</h3>
-                  <p>{pose.description}</p>
-                </div>
+                
+                <p className="severity-description">{severityInfo.description}</p>
               </div>
-            ))}
+
+              <button className="retake-btn" onClick={() => navigate('/survey')}>
+                Retake Assessment
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Wellness Recommendations Section */}
+        {data.wellness_recommendations && (
+          <div className="wellness-section">
+            <h2>Personalized Wellness Recommendations</h2>
+            <p className="section-description">Based on your migraine severity level</p>
+
+            <div className="wellness-grid">
+              {/* Yoga */}
+              <div className="wellness-card">
+                <h3>🧘 Yoga Poses</h3>
+                <ul>
+                  {data.wellness_recommendations.yoga.map((pose, idx) => (
+                    <li key={idx}>{pose}</li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Exercises */}
+              <div className="wellness-card">
+                <h3>💪 Exercises</h3>
+                <ul>
+                  {data.wellness_recommendations.exercises.map((exercise, idx) => (
+                    <li key={idx}>{exercise}</li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Meditation */}
+              <div className="wellness-card">
+                <h3>🧠 Meditation</h3>
+                <ul>
+                  {data.wellness_recommendations.meditation.map((meditation, idx) => (
+                    <li key={idx}>{meditation}</li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Massage */}
+              <div className="wellness-card">
+                <h3>💆 Massage Techniques</h3>
+                <ul>
+                  {data.wellness_recommendations.massage.map((massage, idx) => (
+                    <li key={idx}>{massage}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

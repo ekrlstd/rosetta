@@ -1,92 +1,267 @@
-body {
-  overflow-y: auto !important;
-  font-family: "Inter";
-}
-
+/* Container & Layout */
 .about-container {
   position: relative;
-  width: 100vw;
-  min-height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background-color: #060010;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .about-content {
-  position: relative;
-  z-index: 10;
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 8rem 2rem 4rem 2rem;
-  color: white;
 }
 
+/* Custom Scrollbar */
+.about-content::-webkit-scrollbar {
+  width: 12px;
+}
+
+.about-content::-webkit-scrollbar-track {
+  background: rgba(17, 17, 27, 0.5);
+  border-radius: 6px;
+}
+
+.about-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #a855f7, #5227ff);
+  border-radius: 6px;
+  border: 2px solid rgba(17, 17, 27, 0.5);
+}
+
+.about-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #9333ea, #4c1fb8);
+}
+
+/* Title */
 .about-content h1 {
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 700;
-  margin: 0 0 3rem 0;
   text-align: center;
+  margin-bottom: 3rem;
   background: linear-gradient(135deg, #fff, #a855f7);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Top Section - Side by Side Layout */
+/* Top Section */
 .top-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 }
 
-/* Music and Results Sections */
-.music-section, .results-section {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
+/* Section Styling */
+.music-section,
+.results-section,
+.wellness-section {
+  background: rgba(17, 17, 27, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: 24px;
   padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.music-section h2, .results-section h2 {
-  font-size: 1.8rem;
+.music-section h2,
+.results-section h2,
+.wellness-section h2 {
+  font-size: 1.5rem;
   font-weight: 600;
-  margin: 0 0 1rem 0;
-  color: #fff;
-  opacity: 0.95;
+  margin-bottom: 0.5rem;
+  color: #a855f7;
 }
 
 .section-description {
-  font-size: 1.1rem;
-  line-height: 1.5;
-  opacity: 0.85;
-  margin: 0 0 1.5rem 0;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
 }
 
-/* Spotify Embed - Original Style */
+/* Spotify Embed */
 .spotify-embed-large {
-  width: 100%;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.2);
+  margin-bottom: 1rem;
 }
 
 .spotify-embed-large iframe {
+  display: block;
+}
+
+/* Song Navigation */
+.song-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
 }
 
-/* Results Section - Empty State */
+.song-nav-btn {
+  padding: 0.5rem 1rem;
+  background: rgba(168, 85, 247, 0.2);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 8px;
+  color: white;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.song-nav-btn:hover:not(:disabled) {
+  background: rgba(168, 85, 247, 0.4);
+  transform: translateY(-1px);
+}
+
+.song-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.song-counter {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Current Song Info */
+.current-song-info {
+  padding: 1rem;
+  background: rgba(168, 85, 247, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(168, 85, 247, 0.1);
+}
+
+.current-song-info h4 {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.current-song-info p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  margin: 0.25rem 0;
+}
+
+.current-song-info .album-name {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+}
+
+/* Results Content */
+.results-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.severity-display {
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(168, 85, 247, 0.1);
+}
+
+/* Circular Progress */
+.circular-progress {
+  position: relative;
+  display: inline-flex;
+  margin: 0 auto 1.5rem;
+}
+
+.progress-ring {
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.3));
+}
+
+.progress-ring-circle {
+  stroke-linecap: round;
+}
+
+.progress-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.severity-emoji {
+  font-size: 1.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.percentage-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.severity-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.severity-description {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.875rem;
+  margin: 0;
+  line-height: 1.5;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+/* Buttons */
+.retake-btn,
+.take-assessment-btn {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #5227FF, #a855f7);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(82, 39, 255, 0.3);
+}
+
+.retake-btn:hover,
+.take-assessment-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(82, 39, 255, 0.4);
+}
+
+/* Results Placeholder */
 .results-placeholder {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3rem 1rem;
+  padding: 3rem 1.5rem;
   text-align: center;
-  min-height: 300px;
+  min-height: 400px;
 }
 
 .placeholder-icon {
@@ -96,121 +271,96 @@ body {
 }
 
 .results-placeholder p {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 1rem;
-  opacity: 0.85;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 1.5rem;
 }
 
-/* Yoga Section */
-.yoga-section {
-  margin-bottom: 3rem;
-}
-
-.yoga-section h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #fff;
-  margin: 0 0 1rem 0;
-  text-align: center;
-  opacity: 0.95;
-}
-
-.yoga-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+/* Wellness Section */
+.wellness-section {
   margin-top: 2rem;
 }
 
-.yoga-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  cursor: pointer;
+.wellness-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-.yoga-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
-  border: 1px solid rgba(168, 85, 247, 0.4);
-}
-
-.yoga-image-container {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-  position: relative;
-}
-
-.yoga-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.yoga-card:hover .yoga-image {
-  transform: scale(1.1);
-}
-
-.yoga-info {
+.wellness-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: 16px;
   padding: 1.5rem;
+  transition: all 0.3s ease;
 }
 
-.yoga-info h3 {
-  font-size: 1.3rem;
+.wellness-card:hover {
+  transform: translateY(-4px);
+  border-color: #a855f7;
+  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+}
+
+.wellness-card h3 {
+  color: white;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: #fff;
-  margin-bottom: 0.75rem;
-  opacity: 0.95;
+  margin: 0 0 1rem 0;
 }
 
-.yoga-info p {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.85);
+.wellness-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.wellness-card li {
+  color: rgba(255, 255, 255, 0.8);
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.875rem;
   line-height: 1.5;
-  opacity: 0.85;
 }
 
-/* Scrollbar styling */
-.about-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.about-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.about-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-}
-
-.about-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+.wellness-card li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #a855f7;
+  font-weight: bold;
 }
 
 /* Responsive Design */
-@media (max-width: 968px) {
+@media (max-width: 1024px) {
   .top-section {
     grid-template-columns: 1fr;
   }
-  
-  .yoga-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+  .wellness-grid {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
   .about-content h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
-  
-  .yoga-grid {
-    grid-template-columns: 1fr;
+
+  .percentage-value {
+    font-size: 2rem;
+  }
+
+  .severity-emoji {
+    font-size: 1.5rem;
+  }
+
+  .song-navigation {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .circular-progress {
+    transform: scale(0.9);
   }
 }
