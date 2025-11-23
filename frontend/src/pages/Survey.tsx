@@ -163,7 +163,7 @@ export default function Survey() {
             alert("Network error. Make sure backend is running.");
         }
     };
-
+ 
     const progressPercentage = ((currentPage + 1) / totalPages) * 100;
 
     return (
