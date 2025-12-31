@@ -5,7 +5,15 @@ from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from app.telemetry import init_telemetry
 
 # Initialize Telemetry
-init_telemetry()
+import os
+OTEL_ENDPOINT = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://46.62.229.59")
+API_KEY = os.getenv("SKYVIEW_API_KEY", "")
+
+init_telemetry(
+    service_name="rosetta-backend",
+    endpoint=OTEL_ENDPOINT,
+    api_key=API_KEY
+)
 
 
 app = FastAPI(
