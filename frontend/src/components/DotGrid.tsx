@@ -241,6 +241,7 @@ const DotGrid: React.FC<DotGridProps> = ({
       }
     };
 
+    /*
     const onClick = (e: MouseEvent) => {
       const rect = canvasRef.current!.getBoundingClientRect();
       const cx = e.clientX - rect.left;
@@ -268,6 +269,7 @@ const DotGrid: React.FC<DotGridProps> = ({
         }
       }
     };
+    */
 
     const throttledMove = throttle(onMove, 50);
     window.addEventListener("mousemove", throttledMove, { passive: true });

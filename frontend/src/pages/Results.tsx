@@ -43,10 +43,10 @@ export default function Results() {
 
     const getSeverityInfo = (level: number) => {
         const info: Record<number, { label: string; color: string; emoji: string; description: string }> = {
-            1: { label: "Mild", color: "#10b981", description: "Low severity - manageable with light activities" },
-            2: { label: "Moderate", color: "#f59e0b", description: "Moderate severity - rest and gentle relief methods recommended" },
-            3: { label: "Severe", color: "#ef4444", description: "High severity - significant rest and relief measures needed" },
-            4: { label: "Critical", color: "#dc2626", description: "Very severe - complete rest and immediate relief required" }
+            1: { label: "Mild", color: "#10b981", emoji: "🙂", description: "Low severity - manageable with light activities" },
+            2: { label: "Moderate", color: "#f59e0b", emoji: "😐", description: "Moderate severity - rest and gentle relief methods recommended" },
+            3: { label: "Severe", color: "#ef4444", emoji: "😣", description: "High severity - significant rest and relief measures needed" },
+            4: { label: "Critical", color: "#dc2626", emoji: "😫", description: "Very severe - complete rest and immediate relief required" }
         };
         return info[level] || info[2];
     };
