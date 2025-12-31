@@ -10,8 +10,8 @@ def init_telemetry():
     Initializes OpenTelemetry with OTLP/HTTP exporter.
     """
     # Configuration
-    # DEFAULT endpoint: http://46.62.204.165/v1/traces (Hetzner IP)
-    endpoint = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://46.62.204.165/v1/traces")
+    # DEFAULT endpoint: http://46.62.229.59/v1/traces (SkyView IP)
+    endpoint = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://46.62.229.59/v1/traces")
     
     # API Key retrieval
     api_key = os.getenv("SKYVIEW_API_KEY", "")
