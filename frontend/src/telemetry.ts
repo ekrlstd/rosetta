@@ -9,8 +9,8 @@ import { ZoneContextManager } from '@opentelemetry/context-zone';
 import { resourceFromAttributes } from '@opentelemetry/resources';
 
 // Trace Endpoint
-// DEFAULT endpoint: http://46.62.204.165/v1/traces (Hetzner IP)
-const COLLECTOR_URL = import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT || 'http://46.62.204.165/v1/traces';
+// Use relative path to go through Nginx proxy --> avoids CORS
+const COLLECTOR_URL = '/v1/traces';
 const API_KEY = import.meta.env.VITE_SKYVIEW_API_KEY || '';
 
 // Define Resource
