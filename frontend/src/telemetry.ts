@@ -19,17 +19,20 @@ const resource = resourceFromAttributes({
     'service.name': 'rosetta-frontend',
 });
 
-// Configure Provider
-const provider = new WebTracerProvider({ resource });
-
 // Configure Exporter
 const exporter = new OTLPTraceExporter({
     url: COLLECTOR_URL,
     headers: API_KEY ? { 'X-API-Key': API_KEY } : {},
 });
 
-// Add Processor
-(provider as any).addSpanProcessor(new BatchSpanProcessor(exporter));
+// Configure Processor
+const spanProcessor = new BatchSpanProcessor(exporter);
+
+// Configure Provider
+const provider = new WebTracerProvider({
+    resource,
+    spanProcessors: [spanProcessor]
+});
 
 // Register Provider
 provider.register({
