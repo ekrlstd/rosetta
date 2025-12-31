@@ -33,14 +33,8 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Copy a custom Nginx configuration to handle React Router
 # We created this inline to avoid needing a separate file for now, 
 # but for more complex setups, an external nginx.conf is better.
-RUN echo 'server { \
-    listen 80; \
-    location / { \
-        root /usr/share/nginx/html; \
-        index index.html index.htm; \
-        try_files $uri $uri/ /index.html; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
+# Copy Nginx template for envsubst to process at runtime
+COPY default.conf.template /etc/nginx/templates/default.conf.template
 
 EXPOSE 80
 
