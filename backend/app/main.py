@@ -27,6 +27,15 @@ import logging
 logger = logging.getLogger(__name__)
 logger.info("🚀 Rosetta Backend Starting Up! Telemetry initialized.")
 
+# Create a request counter metric
+from opentelemetry import metrics
+meter = metrics.get_meter(__name__)
+request_counter = meter.create_counter(
+    "http_requests_total",
+    description="Total HTTP requests",
+    unit="1"
+)
+
 # Instrument FastAPI
 FastAPIInstrumentor.instrument_app(app)
 
@@ -42,5 +51,6 @@ app.add_middleware(
 
 @app.get("/")
 async def read_root():
+    request_counter.add(1, {"endpoint": "/", "method": "GET"})
     logger.info("✅ Root endpoint called - Connection Successful")
     return {"Hello": "World"}

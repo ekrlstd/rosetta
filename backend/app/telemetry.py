@@ -36,7 +36,8 @@ def init_telemetry(service_name: str, endpoint: str, api_key: str):
         OTLPMetricExporter(
             endpoint=f"{endpoint}/v1/metrics",
             headers=headers
-        )
+        ),
+        export_interval_millis=15000  # Export every 15 seconds
     )
     meter_provider = MeterProvider(resource=resource, metric_readers=[metric_reader])
     metrics.set_meter_provider(meter_provider)
