@@ -22,6 +22,11 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# Create logger
+import logging
+logger = logging.getLogger(__name__)
+logger.info("🚀 Rosetta Backend Starting Up! Telemetry initialized.")
+
 # Instrument FastAPI
 FastAPIInstrumentor.instrument_app(app)
 
@@ -37,4 +42,5 @@ app.add_middleware(
 
 @app.get("/")
 async def read_root():
+    logger.info("✅ Root endpoint called - Connection Successful")
     return {"Hello": "World"}
