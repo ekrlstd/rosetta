@@ -61,7 +61,7 @@ export default function Survey() {
     const handleWeatherChange = (weather: string) => {
         setSelectedWeather(weather);
         const weatherData = { sunny: 0, cloudy: 0, rainy: 0, snowy: 0 };
-        
+
         if (weather === "sunny") weatherData.sunny = 1;
         else if (weather === "cloudy") weatherData.cloudy = 1;
         else if (weather === "rainy") weatherData.rainy = 1;
@@ -138,7 +138,8 @@ export default function Survey() {
         // console.log("Sending payload →", payload);
 
         try {
-            const response = await fetch("http://localhost:8000/predict", {
+            const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
+            const response = await fetch(`${apiUrl}/predict`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -163,7 +164,7 @@ export default function Survey() {
             alert("Network error. Make sure backend is running.");
         }
     };
- 
+
     const progressPercentage = ((currentPage + 1) / totalPages) * 100;
 
     return (
@@ -287,7 +288,7 @@ export default function Survey() {
                                     <label htmlFor="caffeine_intake">Caffeine Intake (Cups) - Optional</label>
                                     <select id="caffeine_intake" value={formData.caffeine_intake} onChange={(e) => handleInputChange("caffeine_intake", e.target.value)}>
                                         <option value="">None</option>
-                                    
+
                                         {Array.from({ length: 10 }, (_, i) => i + 1).map(cup => (
                                             <option key={cup} value={cup}>{cup} Cup{cup > 1 ? 's' : ''}</option>
                                         ))}
@@ -302,7 +303,7 @@ export default function Survey() {
                                 <div className="form-group">
                                     <label htmlFor="screen_time">Screen Time (Hours) - Optional</label>
                                     <select id="screen_time" value={formData.screen_time} onChange={(e) => handleInputChange("screen_time", e.target.value)}>
-                                    
+
                                         {Array.from({ length: 13 }, (_, i) => i).map(hour => (
                                             <option key={hour} value={hour}>{hour} Hour{hour !== 1 ? 's' : ''}</option>
                                         ))}
