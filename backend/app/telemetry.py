@@ -52,6 +52,8 @@ def init_telemetry(service_name: str, endpoint: str, api_key: str):
     
     # Attach OTel Logging Handler to Root Logger
     handler = LoggingHandler(level=logging.INFO, logger_provider=logger_provider)
-    logging.getLogger().addHandler(handler)
+    root_logger = logging.getLogger()
+    root_logger.addHandler(handler)
+    root_logger.setLevel(logging.INFO)  # Critical: Set root logger level!
     
     return trace_provider, meter_provider, logger_provider
