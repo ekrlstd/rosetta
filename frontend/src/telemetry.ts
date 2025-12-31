@@ -6,7 +6,7 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch';
 import { ZoneContextManager } from '@opentelemetry/context-zone';
-import * as resources from '@opentelemetry/resources';
+import { resourceFromAttributes } from '@opentelemetry/resources';
 
 // Trace Endpoint
 // DEFAULT endpoint: http://46.62.204.165/v1/traces (Hetzner IP)
@@ -14,8 +14,8 @@ const COLLECTOR_URL = import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT || 'http:
 const API_KEY = import.meta.env.VITE_SKYVIEW_API_KEY || '';
 
 // Define Resource
-// @ts-expect-error Resource type mismatch in newer OTel versions
-const resource = new resources.Resource({
+// Use factory function to avoid constructor issues
+const resource = resourceFromAttributes({
     'service.name': 'rosetta-frontend',
 });
 
