@@ -54,3 +54,10 @@ async def read_root():
     request_counter.add(1, {"endpoint": "/", "method": "GET"})
     logger.info("✅ Root endpoint called - Connection Successful")
     return {"Hello": "World"}
+
+@app.get("/test-error")
+async def test_error():
+    """Endpoint to test error tracking in observability"""
+    request_counter.add(1, {"endpoint": "/test-error", "method": "GET"})
+    logger.error("🔥 Intentional error triggered for testing observability!")
+    raise ValueError("This is a test error to verify observability is working!")
