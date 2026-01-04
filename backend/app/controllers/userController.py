@@ -7,6 +7,10 @@ from app.exercises.exercise_config import get_recommendations_for_level
 from app.controllers.ml_implementation import predict_migraine_score
 
 from app.model.ml_input import MLInput
+import logging
+
+# Configure logger
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -16,6 +20,7 @@ router = APIRouter()
 # ---------------------------------------------
 @router.get("/users")
 async def greet():
+    logger.info("👋 Health check / user greet endpoint called")
     return UserService.greet()
 
 
@@ -24,12 +29,17 @@ async def greet():
 # ---------------------------------------------
 @router.get("/music/recommend/{percentage}")
 def recommend_music(percentage: int):
+    logger.info(f"🎵 Request received for music recommendation: percentage={percentage}")
+    
     if percentage < 0 or percentage > 100:
+        logger.warning(f"⚠️ Invalid percentage provided: {percentage}")
         raise HTTPException(status_code=400, detail="Percentage must be between 0 and 100")
 
     level = get_severity_level(percentage)
     playlist = generate_playlist(percentage)
     wellness = get_recommendations_for_level(level)
+
+    logger.info(f"✅ Generated recommendation: Level={level}, Playlist songs={len(playlist)}")
 
     return {
         "migraine_percentage": percentage,
@@ -54,6 +64,8 @@ def predict_migraine(input: MLInput):
         - playlist
         - wellness recommendations
     """
+    
+    logger.info(f"🧠 Received migraine prediction request. Age={input.age}, Gender={input.gender}, Stress={input.stress_level}, Sleep={input.sleep_duration}h")
 
     try:
         score = predict_migraine_score(
@@ -76,6 +88,7 @@ def predict_migraine(input: MLInput):
             screen_time=input.screen_time,
         )
     except Exception as e:
+        logger.error(f"❌ ML Model prediction failed: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"ML prediction failed: {e}")
 
     # Clip prediction to 0–100
@@ -87,6 +100,8 @@ def predict_migraine(input: MLInput):
     # Playlist + Wellness
     playlist = generate_playlist(score)
     wellness = get_recommendations_for_level(level)
+
+    logger.info(f"✨ Prediction successful: Score={score:.2f}, Severity={level}, Recommended Songs={len(playlist)}")
 
     return {
         "predicted_migraine_score": score,

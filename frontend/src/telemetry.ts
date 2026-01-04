@@ -17,6 +17,7 @@ const API_KEY = import.meta.env.VITE_SKYVIEW_API_KEY || '';
 // Use factory function to avoid constructor issues
 const resource = resourceFromAttributes({
     'service.name': 'rosetta-frontend',
+    'tenant_id': 'rosetta-01',
 });
 
 // Configure Exporter

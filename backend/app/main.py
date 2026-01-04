@@ -58,6 +58,19 @@ async def read_root():
 @app.get("/test-error")
 async def test_error():
     """Endpoint to test error tracking in observability"""
+    from opentelemetry import trace as otel_trace
+    from opentelemetry.trace import Status, StatusCode
+    
     request_counter.add(1, {"endpoint": "/test-error", "method": "GET"})
-    logger.error("🔥 Intentional error triggered for testing observability!")
-    raise ValueError("This is a test error to verify observability is working!")
+    
+    # Get current span and record the error explicitly
+    current_span = otel_trace.get_current_span()
+    
+    try:
+        logger.error("🔥 Intentional error triggered for testing observability!")
+        raise ValueError("This is a test error to verify observability is working!")
+    except Exception as e:
+        # Record exception on the span
+        current_span.record_exception(e)
+        current_span.set_status(Status(StatusCode.ERROR, str(e)))
+        raise  # Re-raise to return 500

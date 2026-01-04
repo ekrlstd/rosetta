@@ -16,7 +16,10 @@ from opentelemetry._logs import set_logger_provider
 
 def init_telemetry(service_name: str, endpoint: str, api_key: str):
     # Resource Configuration
-    resource = Resource.create({"service.name": service_name})
+    resource = Resource.create({
+        "service.name": service_name,
+        "tenant_id": "rosetta-01"
+    })
     
     # Ensure no trailing slash for base endpoint
     endpoint = endpoint.rstrip("/")
